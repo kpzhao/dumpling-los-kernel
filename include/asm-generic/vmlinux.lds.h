@@ -60,6 +60,31 @@
 #define ALIGN_FUNCTION()  . = ALIGN(8)
 
 /*
+ * LD_DEAD_CODE_DATA_ELIMINATION option enables -fdata-sections, which
+ * generates .data.identifier sections, which need to be pulled in with
+ * .data. We don't want to pull in .data..other sections, which Linux
+ * has defined. Same for text and bss.
+ *
+ * RODATA_MAIN is not used because existing code already defines .rodata.x
+ * sections to be brought in with rodata.
+ */
+#if defined(CONFIG_LD_DEAD_CODE_DATA_ELIMINATION) || defined(CONFIG_LTO_CLANG)
+#define TEXT_MAIN .text .text.[0-9a-zA-Z_]*
+#define DATA_MAIN .data .data.[0-9a-zA-Z_]* .data..compoundliteral* .data..L_MergedGlobals*
+#define SDATA_MAIN .sdata .sdata.[0-9a-zA-Z_]*
+#define RODATA_MAIN .rodata .rodata.[0-9a-zA-Z_]*
+#define BSS_MAIN .bss .bss.[0-9a-zA-Z_]* .bss..compoundliteral* .bss..L_MergedGlobals*
+#define SBSS_MAIN .sbss .sbss.[0-9a-zA-Z_]*
+#else
+#define TEXT_MAIN .text
+#define DATA_MAIN .data
+#define SDATA_MAIN .sdata
+#define RODATA_MAIN .rodata
+#define BSS_MAIN .bss
+#define SBSS_MAIN .sbss
+#endif
+
+/*
  * Align to a 32 byte boundary equal to the
  * alignment gcc 4.5 uses for a struct
  */
