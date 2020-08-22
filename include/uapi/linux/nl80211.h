@@ -1216,6 +1216,7 @@ enum nl80211_commands {
 	NL80211_CMD_NOTIFY_RADAR,
 
 	NL80211_CMD_UPDATE_OWE_INFO,
+
 	/* add new commands above here */
 
 	/* used to define NL80211_CMD_MAX below */
@@ -2156,10 +2157,10 @@ enum nl80211_commands {
  *     &enum nl80211_external_auth_action value). This is used with the
  *     &NL80211_CMD_EXTERNAL_AUTH request event.
  * @NL80211_ATTR_EXTERNAL_AUTH_SUPPORT: Flag attribute indicating that the user
- *	space supports external authentication. This attribute shall be used
- *	with %NL80211_CMD_CONNECT and %NL80211_CMD_START_AP request. The driver
- *	may offload authentication processing to user space if this capability
- *	is indicated in the respective requests from the user space.
+ *     space supports external authentication. This attribute shall be used
+ *     only with %NL80211_CMD_CONNECT request. The driver may offload
+ *     authentication processing to user space if this capability is indicated
+ *     in NL80211_CMD_CONNECT requests from the user space.
  *
  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
  * @NL80211_ATTR_MAX: highest attribute number currently defined
